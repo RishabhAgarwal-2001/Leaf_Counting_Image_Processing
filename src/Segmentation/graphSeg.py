@@ -1,6 +1,7 @@
 import numpy as np
 import sys
 import time
+import cv2
 class GraphSegmentation:
     source = []
     terminal = []
@@ -13,6 +14,7 @@ class GraphSegmentation:
     H = 0
     W = 0
     def __init__(self, image):
+        image = self.convertNormalize(image)
         self.createGraphNodes(image)
         self.establishEdges(image)
         self.updateParameters(image)
@@ -20,7 +22,14 @@ class GraphSegmentation:
         print("Initiation Completed!!!")
         # self.assignCost(image)
 
-	
+
+    def convertNormalize(self, image):
+        image = np.float32(image)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        image[:, :, 0] = image[:, :, 0]/360
+        image[:, :, 2] = image[:, :, 2]/255
+        return image
+    
     # Graph Build
         
     def createGraphNodes(self, image):
@@ -94,9 +103,9 @@ class GraphSegmentation:
                     valid = valid + 1
                 if(valid==3):
                     self.Theta.append([i, j])
-                    self.P.append(1)
+                    self.P[i].append(1)
                 else:
-                    self.P.append(0)
+                    self.P[i].append(0)
         print("Theta Values Updated!!!")
         print("Number of Valid Points = ", len(self.Theta), "out of", self.H*self.W)
         print("Weight Prediction Parameter Building Completed!!!")
@@ -157,7 +166,7 @@ class GraphSegmentation:
                 edges[2] = 0
         return
 
-    def heuristic(self, image):
+    def BuildingTree(self, image):
         for i in range(self.H):
             for j in range(self.W):
                 if(self.P[i][j]==0):

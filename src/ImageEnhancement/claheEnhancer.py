@@ -17,7 +17,7 @@ def equalize_light(image, limit=3, grid=(7,7), gray=False):
     image = cv2.cvtColor(limg, cv2.COLOR_LAB2BGR)
     if gray: 
         image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
+    print("Light Equalization Completed!!!")
     return np.uint8(image)
 
 def increase_contrast(image):
@@ -32,16 +32,16 @@ def increase_contrast(image):
     limg = cv2.merge((cl, a, b))
 
     final = cv2.cvtColor(limg, cv2.COLOR_LAB2BGR)
-
+    print("Contrast Enhancement Completed!!!")
     return final 
 
 
 def adjust_contrast(imrgb):
-	clahe = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(2,2))
+    clahe = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(2,2))
 
-	imrgb[:,:,0] = clahe.apply(imrgb[:,:,0])
-	imrgb[:,:,1] = clahe.apply(imrgb[:,:,1])
-	imrgb[:,:,2] = clahe.apply(imrgb[:,:,2])
-
-	return imrgb
+    imrgb[:,:,0] = clahe.apply(imrgb[:,:,0])
+    imrgb[:,:,1] = clahe.apply(imrgb[:,:,1])
+    imrgb[:,:,2] = clahe.apply(imrgb[:,:,2])
+    print("Contrast Adjusted Successfully!!!")
+    return imrgb
 
