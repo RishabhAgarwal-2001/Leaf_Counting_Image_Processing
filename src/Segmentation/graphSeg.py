@@ -170,7 +170,9 @@ class GraphSegmentation:
         for i in range(self.H):
             for j in range(self.W):
                 if(self.P[i][j]==0):
-                	image[i, j] = [0, 0, 0]
+                    image[i, j] = [0, 0, 0]
+                #else:
+                #    image[i, j] = [255, 255, 255]
         return image
 
     
