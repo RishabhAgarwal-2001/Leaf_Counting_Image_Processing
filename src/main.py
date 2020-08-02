@@ -6,65 +6,36 @@ import sys
 import time
 import cv2
 import matplotlib.pyplot as plt
+import argparse
 
-path_to_image = "D:\Projects And Internships\Leaf_Counting\GraphSegPython\w6KiC.png"
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument("-i", "--input", required=True, help="path to input image")
+parser.add_argument("-o", "--output", required=True, help="path to output image")
+parser.add_argument("-p", "--process", default="2", help="Four Different Enhancement Options [1/2/3/4]")
+args = vars(parser.parse_args())
+
+
+#path_to_image = "D:\Projects And Internships\Leaf_Counting\GraphSegPython\ImageTest.png"
+
+path_to_image = args["input"]
+output_path = args["output"]
+preprocess = args["process"]
 
 # Step 1: Loading the Image Using OpenCV
 image = cv2.imread(path_to_image)
-
-# Step 2: Enhancing The Image
-#image = adjust_contrast(image)
-#image = equalize_light(image)
-#image = increase_contrast(image)
-image = histEqu(image)
-
-# Step 3: Segmentation
-segObj = GraphSegmentation(image)
-segImage = segObj.BuildingTree(image)
-
-# Step 4: Trying Something Else
-'''
-from PIL import Image, ImageCms
-# Converting to CMYK Colour Space
-segImage = cv2.cvtColor(segImage, cv2.COLOR_BGR2RGB) #BGR-> RGB
-segImage = Image.fromarray(segImage) # Converting to PIL Image
-segImage = segImage.convert("CMYK") # Converting RGB to CMYK Image
-segImage = np.asarray(segImage) # COnverting Back to Numpy array
-segImage = segImage.copy()
-for i in range(segImage.shape[0]):
-    for j in range(segImage.shape[1]):
-        if(segImage[i][j][0]<=85):
-            segImage[i][j][0] = 0
-        if(segImage[i][j][1]<=15):
-            segImage[i][j][1] = 0
-        if(segImage[i][j][2]<=180):
-            segImage[i][j][2] = 0
+if(type(image) is np.ndarray):
+    # Step 2: Enhancing The Image
+    function_dict = {'1':adjust_contrast, '2':equalize_light, '3':increase_contrast, '4':histEqu}
+    image= function_dict[preprocess](image)
+    
+    # Step 3: Segmentation
+    segObj = GraphSegmentation(image)
+    segImage = segObj.BuildingTree(image)
 
 
-#srgb_p = ImageCms.createProfile("sRGB")
-#lab_p  = ImageCms.createProfile("LAB")
-#rgb2lab = ImageCms.buildTransformFromOpenProfiles(srgb_p, lab_p, "RGB", "LAB")
-#Lab = ImageCms.applyTransform(segImage, rgb2lab)
-#L, a, b = Lab.split()
-#a = 0
-
-fig, axs = plt.subplots(2, 2)
-axs[0, 0].hist(segImage[:, :, 0])
-axs[0, 0].set_title('Channel C')
-axs[0, 1].hist(segImage[:, :, 1])
-axs[0, 1].set_title('Channel M')
-axs[1, 0].hist(segImage[:, :, 2])
-axs[1, 0].set_title('Channel Y')
-axs[1, 1].hist(segImage[:, :, 3])
-axs[1, 1].set_title('Channel K')
-plt.show()
-
-
-#segImage = np.asarray(Lab)
-
-#print(np.max(segImage))
-'''
-
-cv2.imshow("Leaves", segImage)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+    cv2.imwrite("Results.png", segImage)
+    
+else:
+    print("Invalid Path to Image Given... Terminating!!!")
