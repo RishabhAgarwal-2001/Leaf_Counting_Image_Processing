@@ -4,3 +4,5 @@ With increased reliance on plants for food and fuel, researchers need to use adv
 
 ### Preprocessing Image
 Before proceeding to image segmentation, we perform some preprocessing. The main aim is to equalize the contrast in the image and highlight the leaves in the image. The equalization algorithm used was the histogram equalization. The result of this equalization is then used in segmentation. Various other methods such as CLAHE enhancement were also tried to improve image contrast, though best results were obtained using Histogram Equalization. Below is the comparison of two methods - Left (Histogram Equalization) and Right (CLAHE).
+
+![Image](Images/image.jpg)
