@@ -11,7 +11,19 @@ Following are the results Obtained    return
 ***
 
 ### Usage
-Download the Repository and Run the following command
+Download the Repository using the following command
+```
+git clone https://github.com/RishabhAgarwal-2001/Leaf_Counting_Image_Processing.git
+```
+
+Install the requirements by running the following command
+
+```
+pip3 install -r requirements.txt
+```
+
+Then run the main file in src folder to obtain the results
+
 ```
 python main.py -i "path/to/input/image" -o "path/to/output/image" -p "1"
 ```
