@@ -34,8 +34,8 @@ if(type(image) is np.ndarray):
     segObj = GraphSegmentation(image)
     segImage = segObj.BuildingTree(image)
 
-
-    cv2.imwrite("Results.png", segImage)
+    path = output_path + "\Results.png"
+    cv2.imwrite(path, segImage)
     
 else:
     print("Invalid Path to Image Given... Terminating!!!")
